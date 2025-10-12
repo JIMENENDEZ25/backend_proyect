@@ -11,7 +11,7 @@ public class inicio extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
            setSize(1366, 770);  // O usa pack() si prefieres auto-ajuste
            // Cargar y agregar JLabel como fondo
-           URL imagenURL = getClass().getResource("/fondo.jpg");  // Desde src/main/resources
+           URL imagenURL = getClass().getResource("/1.png");  // Desde src/main/resources
            if (imagenURL != null) {
                ImageIcon iconoOriginal = new ImageIcon(imagenURL);
                // Escala la imagen al tamaño del JFrame
