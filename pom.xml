@@ -1,21 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>com.proyect</groupId>
     <artifactId>venta_boletos</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>23</maven.compiler.release>
-        <exec.mainClass>com.proyect.venta_boletos.Venta_boletos</exec.mainClass>
+        <exec.mainClass>views.inicio</exec.mainClass>
     </properties>
-     <dependencies>
-        <!-- Cliente HTTP para consumir REST -->
+
+    <dependencies>
+
+        <!-- Cliente HTTP (Apache HttpClient 4.x) -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.5.14</version>
+        </dependency>
+
+        <!-- Cliente HTTP versión 5 (más reciente, puedes usar uno u otro según tu código) -->
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+            <version>5.2.1</version>
         </dependency>
 
         <!-- Gson para manejar JSON -->
@@ -24,50 +38,72 @@
             <artifactId>gson</artifactId>
             <version>2.11.0</version>
         </dependency>
- <dependency>
-        <groupId>org.apache.httpcomponents.client5</groupId>
-        <artifactId>httpclient5</artifactId>
-        <version>5.2.1</version>
-    </dependency>
 
-    <!-- JSON (Jackson) -->
-    <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>2.16.0</version>
-    </dependency>
-        <!-- (Opcional) Lombok para evitar escribir getters/setters -->
+        <!-- Jackson para JSON (puedes usarlo en paralelo con Gson) -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.16.0</version>
+        </dependency>
+
+        <!-- Lombok (solo en compilación, no se empaqueta en el JAR) -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.34</version>
             <scope>provided</scope>
         </dependency>
-         <dependency>
-             <groupId>unknown.binary</groupId>
-             <artifactId>AbsoluteLayout</artifactId>
-             <version>SNAPSHOT</version>
-         </dependency>
-     </dependencies>
 
-    <build>
-        <plugins>
-            <!-- Plugin para ejecutar la app -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.5.0</version>
-                <configuration>
-                    <mainClass>${exec.mainClass}</mainClass>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+        <!-- Librerías para manipular imágenes -->
+        <dependency>
+            <groupId>net.coobird</groupId>
+            <artifactId>thumbnailator</artifactId>
+            <version>0.4.20</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.twelvemonkeys.imageio</groupId>
+            <artifactId>imageio-core</artifactId>
+            <version>3.10.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.twelvemonkeys.imageio</groupId>
+            <artifactId>imageio-jpeg</artifactId>
+            <version>3.10.1</version>
+        </dependency>
+
+        <!-- AbsoluteLayout de NetBeans (para GUI Swing) -->
+        <dependency>
+    <groupId>org.netbeans.external</groupId>
+    <artifactId>AbsoluteLayout</artifactId>
+    <version>RELEASE113</version>
+</dependency>
+
+
+    </dependencies>
+
+   <build>
+    <plugins>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.5.0</version>
+            <configuration>
+                <mainClass>${exec.mainClass}</mainClass>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+
+
     <repositories>
+        <!-- Repositorio local para librerías externas -->
         <repository>
-            <id>unknown-jars-temp-repo</id>
-            <name>A temporary repository created by NetBeans for libraries and jars it could not identify. Please replace the dependencies in this repository with correct ones and delete this repository.</name>
+            <id>local-lib</id>
             <url>file:${project.basedir}/lib</url>
         </repository>
     </repositories>
+
 </project>
+

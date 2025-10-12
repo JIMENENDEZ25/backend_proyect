@@ -39,15 +39,15 @@
         <Property name="useNullLayout" type="boolean" value="false"/>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="jLabel2">
+        <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/images/1.png"/>
+              <Image iconType="2" name="C:\Users\jimem\OneDrive\Documentos\NetBeansProjects\venta_boletos\src\main\resources\images\1.png"/>
             </Property>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="0" y="0" width="1380" height="680"/>
+              <AbsoluteConstraints x="0" y="0" width="1370" height="770"/>
             </Constraint>
           </Constraints>
         </Component>

@@ -1,8 +1,9 @@
-views\login.class
+views\inicio.class
 com\proyect\venta_boletos\Venta_boletos.class
-views\login$2.class
+models\detalle_venta_model.class
 models\inventario_model.class
 models\usuario_model.class
-views\login$1.class
+services\usuario_service.class
+models\localidad_model4.class
 models\partido_model.class
 models\venta_model.class
