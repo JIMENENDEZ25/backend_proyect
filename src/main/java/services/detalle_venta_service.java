@@ -11,7 +11,7 @@ package services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import models.usuario_model;
+import models.detalle_venta_model;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.classic.methods.HttpDelete;
@@ -25,29 +25,24 @@ import org.apache.hc.core5.http.ContentType;
 import java.io.InputStream; //
 import java.util.List;
 
-public class usuario_service {
+public class detalle_venta_service {
     private static final String BASE_URL = "https://venta-boletos.onrender.com";
     private static final ObjectMapper mapper = new ObjectMapper();
 
     // GET clientes
-    public List<usuario_model> getUser() throws Exception {
+    public List<detalle_venta_model> getDetails() throws Exception {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpGet request = new HttpGet(BASE_URL);
             ClassicHttpResponse response = (ClassicHttpResponse) client.execute(request);
             InputStream is = response.getEntity().getContent();
-            return mapper.readValue(is, new TypeReference<List<usuario_model>>() {});
+            return mapper.readValue(is, new TypeReference<List<detalle_venta_model>>() {});
         }
     }
 
     // POST crear cliente
-    public usuario_model createUser(usuario_model c) throws Exception {
+    public detalle_venta_model createDetails(detalle_venta_model c) throws Exception {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost request = new HttpPost(BASE_URL + "/create");
-            
-            if(c.getNombre_usuario() == null || c.getNombre_usuario().isEmpty()){
-                String now = java.time.Instant.now().toString();
-                c.setNombre_usuario(now);
-            }
             
             String json = mapper.writeValueAsString(c);
 
@@ -58,11 +53,11 @@ public class usuario_service {
 
             ClassicHttpResponse response = (ClassicHttpResponse) client.execute(request);
             InputStream is = response.getEntity().getContent();
-            return mapper.readValue(is, usuario_model.class);
+            return mapper.readValue(is, detalle_venta_model.class);
         }
     }
     
-    public usuario_model updateUser(int id, usuario_model c) throws Exception {
+    public detalle_venta_model updateDetails(int id, detalle_venta_model c) throws Exception {
         try(CloseableHttpClient client = HttpClients.createDefault()){
             HttpPut request = new HttpPut(BASE_URL + "/update/" + id);
             String json = mapper.writeValueAsString(c);
@@ -73,11 +68,11 @@ public class usuario_service {
                     .build());
             ClassicHttpResponse response = (ClassicHttpResponse) client.execute(request);
             InputStream is = response.getEntity().getContent();
-            return mapper.readValue(is, usuario_model.class);
+            return mapper.readValue(is, detalle_venta_model.class);
         }
     }
     
-    public void deleteUser (int id) throws Exception {
+    public void deleteCustomer (int id) throws Exception {
         try (CloseableHttpClient client = HttpClients.createDefault()){
             HttpDelete request = new HttpDelete(BASE_URL + "/delete/" + id);
             client.execute(request).close();

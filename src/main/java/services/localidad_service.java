@@ -11,7 +11,7 @@ package services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import models.usuario_model;
+import models.localidad_model4;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.classic.methods.HttpDelete;
@@ -25,28 +25,27 @@ import org.apache.hc.core5.http.ContentType;
 import java.io.InputStream; //
 import java.util.List;
 
-public class usuario_service {
-    private static final String BASE_URL = "https://venta-boletos.onrender.com";
+public class localidad_service {
+    private static final String BASE_URL = "https://apirest2025umg.onrender.com/api/customer";
     private static final ObjectMapper mapper = new ObjectMapper();
 
     // GET clientes
-    public List<usuario_model> getUser() throws Exception {
+    public List<localidad_model4> getLocalidades() throws Exception {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpGet request = new HttpGet(BASE_URL);
             ClassicHttpResponse response = (ClassicHttpResponse) client.execute(request);
             InputStream is = response.getEntity().getContent();
-            return mapper.readValue(is, new TypeReference<List<usuario_model>>() {});
+            return mapper.readValue(is, new TypeReference<List<localidad_model4>>() {});
         }
     }
 
     // POST crear cliente
-    public usuario_model createUser(usuario_model c) throws Exception {
+    public localidad_model4 createLocalidad(localidad_model4 c) throws Exception {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost request = new HttpPost(BASE_URL + "/create");
             
-            if(c.getNombre_usuario() == null || c.getNombre_usuario().isEmpty()){
-                String now = java.time.Instant.now().toString();
-                c.setNombre_usuario(now);
+            if(c.getNombre() == null || c.getNombre().isEmpty()){
+                throw new IllegalArgumentException("Nombre de localidad no puede ser vacío.");
             }
             
             String json = mapper.writeValueAsString(c);
@@ -58,11 +57,11 @@ public class usuario_service {
 
             ClassicHttpResponse response = (ClassicHttpResponse) client.execute(request);
             InputStream is = response.getEntity().getContent();
-            return mapper.readValue(is, usuario_model.class);
+            return mapper.readValue(is, localidad_model4.class);
         }
     }
     
-    public usuario_model updateUser(int id, usuario_model c) throws Exception {
+    public localidad_model4 updateLocalidad(int id, localidad_model4 c) throws Exception {
         try(CloseableHttpClient client = HttpClients.createDefault()){
             HttpPut request = new HttpPut(BASE_URL + "/update/" + id);
             String json = mapper.writeValueAsString(c);
@@ -73,11 +72,11 @@ public class usuario_service {
                     .build());
             ClassicHttpResponse response = (ClassicHttpResponse) client.execute(request);
             InputStream is = response.getEntity().getContent();
-            return mapper.readValue(is, usuario_model.class);
+            return mapper.readValue(is, localidad_model4.class);
         }
     }
     
-    public void deleteUser (int id) throws Exception {
+    public void deleteLocalidad(int id) throws Exception {
         try (CloseableHttpClient client = HttpClients.createDefault()){
             HttpDelete request = new HttpDelete(BASE_URL + "/delete/" + id);
             client.execute(request).close();
