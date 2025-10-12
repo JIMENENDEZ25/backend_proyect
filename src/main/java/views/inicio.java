@@ -46,12 +46,57 @@ public class inicio extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        TITLE = new javax.swing.JLabel();
+        lblUser = new javax.swing.JLabel();
+        txtUser = new javax.swing.JTextField();
+        lblPassword = new javax.swing.JLabel();
+        txtPassword = new javax.swing.JTextField();
+        btnLogin = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        TITLE.setBackground(new java.awt.Color(0, 0, 0));
+        TITLE.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        TITLE.setForeground(new java.awt.Color(0, 0, 0));
+        TITLE.setText("INICIO SESIÓN");
+        jPanel1.add(TITLE, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 270, -1, -1));
+
+        lblUser.setBackground(new java.awt.Color(0, 0, 0));
+        lblUser.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblUser.setForeground(new java.awt.Color(0, 0, 0));
+        lblUser.setText("Usuario:");
+        jPanel1.add(lblUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 360, -1, -1));
+
+        txtUser.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.add(txtUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 360, 210, -1));
+
+        lblPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblPassword.setForeground(new java.awt.Color(0, 0, 0));
+        lblPassword.setText("Contraseña:");
+        jPanel1.add(lblPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 400, -1, -1));
+
+        txtPassword.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 400, 190, -1));
+
+        btnLogin.setBackground(new java.awt.Color(8, 216, 223));
+        btnLogin.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnLogin.setForeground(new java.awt.Color(0, 0, 0));
+        btnLogin.setText("Iniciar Sesión");
+        btnLogin.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
+        jPanel1.add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 570, 170, 50));
+
+        jButton2.setBackground(new java.awt.Color(8, 216, 223));
+        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(0, 0, 0));
+        jButton2.setText("Registrarse");
+        jButton2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 503, 170, 50));
+
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\jimem\\OneDrive\\Documentos\\NetBeansProjects\\venta_boletos\\src\\main\\resources\\images\\1.png")); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1370, 770));
 
@@ -75,7 +120,14 @@ java.awt.EventQueue.invokeLater(() -> new inicio().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel TITLE;
+    private javax.swing.JButton btnLogin;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblPassword;
+    private javax.swing.JLabel lblUser;
+    private javax.swing.JTextField txtPassword;
+    private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
 }
