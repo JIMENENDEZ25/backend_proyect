@@ -174,9 +174,6 @@ public class inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegisterActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        String usuario = txtUser.getText();
-        String contrania = txtPassword.getText();
-        
         
     }//GEN-LAST:event_btnLoginActionPerformed
   

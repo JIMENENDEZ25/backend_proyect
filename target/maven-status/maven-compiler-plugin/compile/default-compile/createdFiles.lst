@@ -8,6 +8,7 @@ services\venta_service.class
 models\partido_model.class
 models\venta_model.class
 views\Register$1.class
+conexion\CreateConection.class
 services\detalle_venta_service$1.class
 com\proyect\venta_boletos\Venta_boletos.class
 services\localidad_service$1.class
@@ -24,6 +25,8 @@ models\localidad_model4.class
 views\inicio$2.class
 views\Register$4.class
 services\detalle_venta_service.class
+services\usuario_service$2.class
 views\inicio$1.class
 models\detalle_venta_model.class
+util\Encryption.class
 services\localidad_service.class

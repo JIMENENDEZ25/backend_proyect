@@ -21,9 +21,9 @@ import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.ContentType;
-
 import java.io.InputStream; //
 import java.util.List;
+import util.Encryption;
 
 public class usuario_service {
     private static final String BASE_URL = "https://venta-boletos.onrender.com";
@@ -33,9 +33,17 @@ public class usuario_service {
     public List<usuario_model> getUser() throws Exception {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpGet request = new HttpGet(BASE_URL);
+            System.out.println("Ejecutando GET a: " + BASE_URL);
             ClassicHttpResponse response = (ClassicHttpResponse) client.execute(request);
+            int status = response.getCode();
+            System.out.println("Status GET: " + status);
+            if(status != 200){
+                throw new Exception("Error en GET: " + status);
+            }
             InputStream is = response.getEntity().getContent();
-            return mapper.readValue(is, new TypeReference<List<usuario_model>>() {});
+            List<usuario_model> users = mapper.readValue(is, new TypeReference<List<usuario_model>>(){});
+            System.out.println("Usuarios obtenidos: " + users.size());
+            return users;
         }
     }
 
@@ -50,16 +58,44 @@ public class usuario_service {
             }
             
             String json = mapper.writeValueAsString(c);
-
+            System.out.println("Enviando POST a: " + BASE_URL + "/create con Json: " + json);
             request.setEntity(EntityBuilder.create()
                     .setText(json)
                     .setContentType(ContentType.APPLICATION_JSON) //Para especificar el tipo de lenguaje del body que va a recibir
                     .build());
 
             ClassicHttpResponse response = (ClassicHttpResponse) client.execute(request);
+            int status = response.getCode();
+            System.out.println("Status POST: " + status);
+            if(status != 200 && status != 201){
+                throw new Exception("Error en POST: status " + status);
+            }
             InputStream is = response.getEntity().getContent();
-            return mapper.readValue(is, usuario_model.class);
+            usuario_model created = mapper.readValue(is, usuario_model.class);
+            System.out.println("Usuario creado: " + created.getNombre_usuario());
+            return created;
         }
+    }
+    
+    public boolean login(String nombre_usuario, String contrasena) throws Exception {
+        try (CloseableHttpClient client = HttpClients.createDefault()) {
+            HttpGet request = new HttpGet(BASE_URL);
+            ClassicHttpResponse response = (ClassicHttpResponse) client.execute(request);
+
+            if (response.getCode() == 200) {
+                InputStream is = response.getEntity().getContent();
+                List<usuario_model> users = mapper.readValue(is, new TypeReference<List<usuario_model>>() {});
+
+                String hashIngresada = Encryption.hashMD5(contrasena);
+
+                for (usuario_model s : users) {
+                    if (s.getNombre_usuario().equalsIgnoreCase(nombre_usuario) && s.getContrasena().equals(hashIngresada)) {
+                        return true; 
+                    }
+                }
+            }
+        }
+        return false;
     }
     
     public usuario_model updateUser(int id, usuario_model c) throws Exception {

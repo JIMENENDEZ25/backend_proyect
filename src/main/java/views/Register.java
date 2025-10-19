@@ -139,7 +139,7 @@ public class Register extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(jlistRol);
 
-        pfondo.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 400, 130, 30));
+        pfondo.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 400, 130, 20));
         pfondo.add(txtName, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 240, 200, 30));
         pfondo.add(lblfondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 0, 1150, 630));
 
