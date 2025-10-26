@@ -8,12 +8,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties (ignoreUnknown =  true)
 
 public class usuario_model {
+        
     private int id_usuario;
     private String nombre_usuario;
     private String contrasena;
     private String nombre_completo;
     private String rol;
-    private int fecha_creacion;
+    private String fecha_creacion;
+
+    // Getters y setters
 
     public int getId_usuario() {
         return id_usuario;
@@ -55,13 +58,13 @@ public class usuario_model {
         this.rol = rol;
     }
 
-    public int getFecha_creacion() {
+    public String getFecha_creacion() {
         return fecha_creacion;
     }
 
-    public void setFecha_creacion(int fecha_creacion) {
+    public void setFecha_creacion(String fecha_creacion) {
         this.fecha_creacion = fecha_creacion;
     }
-
+    
     
 }

@@ -4,18 +4,139 @@
  */
 package views;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.Box;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import services.usuario_service;
+import models.usuario_model;
+import java.util.Date;
+import java.util.List;
+import views.Consultar;
+
+
+
 /**
  *
- * @author jimem
+ * @author HP
  */
 public class GestionUsuarios extends javax.swing.JFrame {
+    
+    FondoPanel fondo = new FondoPanel();
+    private usuario_service service = new usuario_service();
+
 
     /**
      * Creates new form GestionUsuarios
      */
-    public GestionUsuarios() {
-        initComponents();
+public GestionUsuarios() {
+    initComponents();
+    setLocationRelativeTo(null);
+
+    // === Fondo principal ===
+    jPanel1.setLayout(new java.awt.BorderLayout());
+    jPanel1.setOpaque(false);
+
+    // === Panel superior (formulario) ===
+    panelSuperior.setOpaque(false);
+    panelSuperior.setLayout(new java.awt.GridBagLayout());
+    java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+    gbc.insets = new java.awt.Insets(15, 15, 15, 15); // Espaciado entre filas
+    gbc.anchor = java.awt.GridBagConstraints.WEST; // Alinear a la izquierda
+    gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+
+    // === Fuentes ===
+    java.awt.Font fuenteLabel = new java.awt.Font("Segoe UI Semibold", java.awt.Font.PLAIN, 16);
+    java.awt.Font fuenteCampo = new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 15);
+
+    // === Asignar fuentes ===
+    jLabelUsuario.setFont(fuenteLabel);
+    jLabelContrasena.setFont(fuenteLabel);
+    jLabelNombreCompleto.setFont(fuenteLabel);
+    jLabelRol.setFont(fuenteLabel);
+
+    JTextField[] campos = { txtUser, txtPassword, txtFullName };
+    for (JTextField t : campos) {
+        t.setFont(fuenteCampo);
+        t.setPreferredSize(new java.awt.Dimension(280, 35));
+        t.setBackground(new java.awt.Color(255, 255, 255, 230)); // leve transparencia
+        t.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
     }
+
+    comboRol.setFont(fuenteCampo);
+    comboRol.setBackground(new java.awt.Color(255, 255, 255, 230));
+    comboRol.setPreferredSize(new java.awt.Dimension(280, 35));
+
+    // === Colocar los labels y campos (2 columnas) ===
+    gbc.gridx = 0; gbc.gridy = 0;
+    panelSuperior.add(jLabelUsuario, gbc);
+    gbc.gridx = 1;
+    panelSuperior.add(txtUser, gbc);
+
+    gbc.gridx = 0; gbc.gridy++;
+    panelSuperior.add(jLabelContrasena, gbc);
+    gbc.gridx = 1;
+    panelSuperior.add(txtPassword, gbc);
+
+    gbc.gridx = 0; gbc.gridy++;
+    panelSuperior.add(jLabelNombreCompleto, gbc);
+    gbc.gridx = 1;
+    panelSuperior.add(txtFullName, gbc);
+
+    gbc.gridx = 0; gbc.gridy++;
+    panelSuperior.add(jLabelRol, gbc);
+    gbc.gridx = 1;
+    panelSuperior.add(comboRol, gbc);
+
+    // === Panel inferior de botones ===
+    panelBotones.setOpaque(false);
+    panelBotones.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 25, 20));
+    
+    // Limpiar elementos existentes (por si hubiera)
+    comboRol.removeAllItems();
+
+    // Agregar roles disponibles
+    comboRol.addItem("administrador");
+    comboRol.addItem("vendedor");
+
+    // Opcional: establecer un valor por defecto
+    comboRol.setSelectedIndex(0); // Selecciona "Administrador"
+
+
+    JButton[] botones = { jButton1, create, jButtonConsultar };
+    for (JButton b : botones) {
+        b.setPreferredSize(new java.awt.Dimension(130, 40));
+        b.setBackground(new java.awt.Color(8, 184, 223)); // color #08b8df
+        b.setForeground(Color.WHITE);
+        b.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+        b.setFocusPainted(false);
+        b.setBorderPainted(false);
+        b.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        panelBotones.add(b);
+    }
+    
+    jButtonConsultar.addActionListener(e -> {
+    // Abrir ventana de consulta de usuarios
+    Consultar ventana = new Consultar();
+    ventana.setVisible(true);
+
+    // Aquí podrías llamar después a un método que haga la petición al backend
+    // ventana.cargarUsuariosDesdeAPI();
+});
+
+
+    // === Añadir ambos paneles ===
+    jPanel1.add(panelSuperior, java.awt.BorderLayout.CENTER);
+    jPanel1.add(panelBotones, java.awt.BorderLayout.SOUTH);
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -26,21 +147,211 @@ public class GestionUsuarios extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new FondoPanel();
+        panelBotones = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        create = new javax.swing.JButton();
+        jButtonConsultar = new javax.swing.JButton();
+        panelSuperior = new javax.swing.JPanel();
+        jLabelUsuario = new javax.swing.JLabel();
+        jLabelContrasena = new javax.swing.JLabel();
+        jLabelNombreCompleto = new javax.swing.JLabel();
+        jLabelRol = new javax.swing.JLabel();
+        txtUser = new javax.swing.JTextField();
+        txtPassword = new javax.swing.JTextField();
+        txtFullName = new javax.swing.JTextField();
+        comboRol = new javax.swing.JComboBox<>();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jButton1.setText("Regresar");
+
+        create.setText("Crear");
+        create.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createActionPerformed(evt);
+            }
+        });
+
+        jButtonConsultar.setText("Consultar");
+
+        jLabelUsuario.setText("Usuario");
+
+        jLabelContrasena.setText("Contraseña");
+
+        jLabelNombreCompleto.setText("Nombre Completo");
+
+        jLabelRol.setText("Rol");
+
+        comboRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        javax.swing.GroupLayout panelSuperiorLayout = new javax.swing.GroupLayout(panelSuperior);
+        panelSuperior.setLayout(panelSuperiorLayout);
+        panelSuperiorLayout.setHorizontalGroup(
+            panelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSuperiorLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelSuperiorLayout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(jLabelRol)
+                        .addGap(433, 433, 433)
+                        .addComponent(comboRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(99, Short.MAX_VALUE))
+                    .addGroup(panelSuperiorLayout.createSequentialGroup()
+                        .addGroup(panelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelSuperiorLayout.createSequentialGroup()
+                                .addGap(3, 3, 3)
+                                .addGroup(panelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelUsuario)
+                                    .addComponent(jLabelContrasena)))
+                            .addComponent(jLabelNombreCompleto, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGroup(panelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelSuperiorLayout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addGroup(panelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(panelSuperiorLayout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(txtFullName, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
+        );
+        panelSuperiorLayout.setVerticalGroup(
+            panelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSuperiorLayout.createSequentialGroup()
+                .addGap(89, 89, 89)
+                .addGroup(panelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelUsuario)
+                    .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
+                .addGroup(panelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelContrasena)
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(panelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelSuperiorLayout.createSequentialGroup()
+                        .addGap(58, 58, 58)
+                        .addComponent(jLabelRol))
+                    .addGroup(panelSuperiorLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(panelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelNombreCompleto, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtFullName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(439, 439, 439)
+                        .addComponent(comboRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout panelBotonesLayout = new javax.swing.GroupLayout(panelBotones);
+        panelBotones.setLayout(panelBotonesLayout);
+        panelBotonesLayout.setHorizontalGroup(
+            panelBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelBotonesLayout.createSequentialGroup()
+                .addGap(168, 168, 168)
+                .addComponent(jButton1)
+                .addGap(40, 40, 40)
+                .addComponent(create)
+                .addGap(33, 33, 33)
+                .addComponent(jButtonConsultar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(panelBotonesLayout.createSequentialGroup()
+                .addComponent(panelSuperior, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        panelBotonesLayout.setVerticalGroup(
+            panelBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelBotonesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelSuperior, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addGroup(panelBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButtonConsultar)
+                    .addComponent(create))
+                .addGap(67, 67, 67))
+        );
+
+        jPanel1.add(panelBotones, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 410));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createActionPerformed
+                                    
+    // Validar campos del formulario
+    String nombreUsuario = txtUser.getText().trim();
+    String contrasena = txtPassword.getText().trim();
+    String nombreCompleto = txtFullName.getText().trim();
+    String rol = comboRol.getSelectedItem().toString();
+
+    if (nombreUsuario.isEmpty() || contrasena.isEmpty() || nombreCompleto.isEmpty() || rol.isEmpty()) {
+        JOptionPane.showMessageDialog(this, 
+            "⚠️ Todos los campos son obligatorios.",
+            "Validación", JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
+
+    // Validar rol permitido
+    if (!rol.equals("administrador") && !rol.equals("vendedor")) {
+        JOptionPane.showMessageDialog(this, 
+            "⚠️ El rol debe ser 'administrador' o 'vendedor'.",
+            "Validación", JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
+
+    // Crear el modelo del usuario
+    usuario_model u = new usuario_model();
+    u.setNombre_usuario(nombreUsuario);
+    u.setContrasena(contrasena);
+    u.setNombre_completo(nombreCompleto);
+    u.setRol(rol);
+
+    try {
+        // Llamar al servicio para crear el usuario
+        usuario_model usuarioCreado = service.createUsuario(u);
+
+        // Validar respuesta del backend
+        if (usuarioCreado != null && usuarioCreado.getNombre_usuario() != null) {
+            JOptionPane.showMessageDialog(this, 
+                "✅ Usuario agregado correctamente:\n" + usuarioCreado.getNombre_usuario(),
+                "Éxito", JOptionPane.INFORMATION_MESSAGE
+            );
+
+            // Limpiar campos
+            txtUser.setText("");
+            txtPassword.setText("");
+            txtFullName.setText("");
+            comboRol.setSelectedIndex(0);
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                "⚠️ El servidor respondió pero no se pudo interpretar correctamente el usuario.",
+                "Advertencia", JOptionPane.WARNING_MESSAGE
+            );
+        }
+
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this, 
+            "❌ Error al agregar el usuario:\n" + ex.getMessage(),
+            "Error", JOptionPane.ERROR_MESSAGE
+        );
+    }
+
+    }//GEN-LAST:event_createActionPerformed
 
     /**
      * @param args the command line arguments
@@ -68,6 +379,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(GestionUsuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -78,5 +390,30 @@ public class GestionUsuarios extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> comboRol;
+    private javax.swing.JButton create;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonConsultar;
+    private javax.swing.JLabel jLabelContrasena;
+    private javax.swing.JLabel jLabelNombreCompleto;
+    private javax.swing.JLabel jLabelRol;
+    private javax.swing.JLabel jLabelUsuario;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel panelBotones;
+    private javax.swing.JPanel panelSuperior;
+    private javax.swing.JTextField txtFullName;
+    private javax.swing.JTextField txtPassword;
+    private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
+class FondoPanel extends JPanel {
+    private Image imagen;
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        imagen = new ImageIcon(getClass().getResource("/images/4.png")).getImage();
+        g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
+    }
+}
+
 }

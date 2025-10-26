@@ -58,7 +58,8 @@ public class inicio extends javax.swing.JFrame {
             return;
         }
         try{
-            List<usuario_model> users = userService.getUser();
+            List<usuario_model> users = userService.getTodosLosUsuarios();
+
             
             boolean loginSuccesful = false;
             usuario_model loggedUser = null;
