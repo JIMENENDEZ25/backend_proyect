@@ -19,6 +19,7 @@ import services.usuario_service;
 import models.usuario_model;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JFrame;
 import views.Consultar;
 
 
@@ -39,6 +40,9 @@ public class GestionUsuarios extends javax.swing.JFrame {
 public GestionUsuarios() {
     initComponents();
     setLocationRelativeTo(null);
+    setExtendedState(JFrame.MAXIMIZED_BOTH);
+    setVisible(true);
+
 
     // === Fondo principal ===
     jPanel1.setLayout(new java.awt.BorderLayout());
@@ -121,6 +125,18 @@ public GestionUsuarios() {
         b.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         panelBotones.add(b);
     }
+    
+    jButton1.addActionListener(e -> {
+    // Crear la ventana de Administracion
+    Administracion admin = new Administracion();
+    
+    // Hacerla visible
+    admin.setVisible(true);
+    
+    // Cerrar esta ventana de GestionUsuarios
+    this.dispose();
+});
+
     
     jButtonConsultar.addActionListener(e -> {
     // Abrir ventana de consulta de usuarios
@@ -411,7 +427,7 @@ class FondoPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        imagen = new ImageIcon(getClass().getResource("/images/4.png")).getImage();
+        imagen = new ImageIcon(getClass().getResource("/images/5.jpg")).getImage();
         g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
     }
 }

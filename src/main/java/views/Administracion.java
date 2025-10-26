@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.Box;
+import javax.swing.JFrame;
 
 /**
  *
@@ -23,6 +24,9 @@ public class Administracion extends javax.swing.JFrame {
     public Administracion() {
     initComponents();
     setLocationRelativeTo(null);
+    setExtendedState(JFrame.MAXIMIZED_BOTH);
+    setVisible(true);
+
 
     // Fondo principal con layout centrado
     jPanel1.setLayout(new java.awt.GridBagLayout());
@@ -80,17 +84,17 @@ jButton1.addActionListener(e -> {
 //});
 
 // Botón 4 - Cerrar Sesión
-/*jButton4.addActionListener(e -> {
+jButton4.addActionListener(e -> {
     int confirm = javax.swing.JOptionPane.showConfirmDialog(this, 
         "¿Deseas cerrar sesión?", 
         "Confirmar", 
         javax.swing.JOptionPane.YES_NO_OPTION);
     if (confirm == javax.swing.JOptionPane.YES_OPTION) {
-        Login login = new Login();
-        login.setVisible(true);
+        inicio inicio = new inicio();
+        inicio.setVisible(true);
         this.dispose();
     }
-});*/
+});
 
 }
 
@@ -204,7 +208,7 @@ jButton1.addActionListener(e -> {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        imagen = new ImageIcon(getClass().getResource("/images/menu.jpg")).getImage();
+        imagen = new ImageIcon(getClass().getResource("/images/menu.png")).getImage();
         g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
     }
 }

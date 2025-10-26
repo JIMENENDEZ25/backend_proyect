@@ -58,6 +58,9 @@ public class Consultar extends javax.swing.JFrame {
     setLocationRelativeTo(null);
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     setLayout(new BorderLayout());
+    setExtendedState(JFrame.MAXIMIZED_BOTH);
+    setVisible(true);
+
 
     // === Panel de búsqueda alineado a la izquierda ===
     JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 15));
@@ -523,7 +526,7 @@ class FondoPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        imagen = new ImageIcon(getClass().getResource("/images/4.png")).getImage();
+        imagen = new ImageIcon(getClass().getResource("/images/5.jpg")).getImage();
         g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
     }
 }
