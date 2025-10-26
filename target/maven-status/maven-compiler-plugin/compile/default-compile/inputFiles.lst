@@ -1,5 +1,4 @@
 C:\Users\jimem\OneDrive\Documentos\NetBeansProjects\venta_boletos\src\main\java\com\proyect\venta_boletos\Venta_boletos.java
-C:\Users\jimem\OneDrive\Documentos\NetBeansProjects\venta_boletos\src\main\java\conexion\CreateConection.java
 C:\Users\jimem\OneDrive\Documentos\NetBeansProjects\venta_boletos\src\main\java\models\detalle_venta_model.java
 C:\Users\jimem\OneDrive\Documentos\NetBeansProjects\venta_boletos\src\main\java\models\inventario_model.java
 C:\Users\jimem\OneDrive\Documentos\NetBeansProjects\venta_boletos\src\main\java\models\localidad_model4.java
@@ -13,5 +12,9 @@ C:\Users\jimem\OneDrive\Documentos\NetBeansProjects\venta_boletos\src\main\java\
 C:\Users\jimem\OneDrive\Documentos\NetBeansProjects\venta_boletos\src\main\java\services\usuario_service.java
 C:\Users\jimem\OneDrive\Documentos\NetBeansProjects\venta_boletos\src\main\java\services\venta_service.java
 C:\Users\jimem\OneDrive\Documentos\NetBeansProjects\venta_boletos\src\main\java\util\Encryption.java
+C:\Users\jimem\OneDrive\Documentos\NetBeansProjects\venta_boletos\src\main\java\views\Administracion.java
+C:\Users\jimem\OneDrive\Documentos\NetBeansProjects\venta_boletos\src\main\java\views\Consultar.java
+C:\Users\jimem\OneDrive\Documentos\NetBeansProjects\venta_boletos\src\main\java\views\GestionLocalidades.java
+C:\Users\jimem\OneDrive\Documentos\NetBeansProjects\venta_boletos\src\main\java\views\GestionPartidos.java
+C:\Users\jimem\OneDrive\Documentos\NetBeansProjects\venta_boletos\src\main\java\views\GestionUsuarios.java
 C:\Users\jimem\OneDrive\Documentos\NetBeansProjects\venta_boletos\src\main\java\views\inicio.java
-C:\Users\jimem\OneDrive\Documentos\NetBeansProjects\venta_boletos\src\main\java\views\Register.java
