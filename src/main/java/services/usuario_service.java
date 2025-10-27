@@ -16,6 +16,9 @@ import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.StringEntity;
+import java.util.HashMap;
+import java.util.Map;
+import models.RespuestaLogin;
 
 /**
  * Servicio para consumir la API de usuarios desde Render
@@ -28,7 +31,42 @@ public class usuario_service {
     private static final String BASE_URL = "https://venta-boletos.onrender.com/api/usuarios";
     private static final ObjectMapper mapper = new ObjectMapper();
     
-    
+    public usuario_model login (String nombre_usuario, String contrasena) throws Exception{
+        try(CloseableHttpClient user = HttpClients.createDefault()){
+        System.out.println("Enviando credenciales: " + nombre_usuario + " " + contrasena);  // Opcional: separa con espacio
+        HttpPost request = new HttpPost(BASE_URL + "/login");
+        Map<String, String> credenciales = new HashMap<>();
+        credenciales.put("nombre_usuario", nombre_usuario);
+        credenciales.put("contrasena", contrasena);
+        String json = mapper.writeValueAsString(credenciales);
+       
+        System.out.println("Usuario enviado: " + nombre_usuario);
+        System.out.println("Contraseña enviada: " + contrasena);
+        System.out.println("JSON enviado: " + json);
+            request.setEntity(EntityBuilder.create()
+                .setText(json)
+                .setContentType(ContentType.APPLICATION_JSON)
+                .build());
+            ClassicHttpResponse response = (ClassicHttpResponse) user.execute(request);
+            int status = response.getCode();
+            System.out.println("Código de estado de la respuesta: " + status);
+            if(status == 200){
+                InputStream is = response.getEntity().getContent();
+                String responseBody = new String(is.readAllBytes()); // Leer el cuerpo de la respuesta
+                System.out.println("Respuesta exitosa de la API: " + responseBody);
+                 is = new java.io.ByteArrayInputStream(responseBody.getBytes());
+                RespuestaLogin loginResponse = mapper.readValue(is, RespuestaLogin.class);
+                usuario_model usuarioLogueado = loginResponse.getUsuario();
+                System.out.println("DEBUG SERVICE: Rol extraido: [" + usuarioLogueado.getRol() + "]");
+                return usuarioLogueado;
+            }else{
+                InputStream is = response.getEntity().getContent();
+            String responseBody = new String(is.readAllBytes()); // Leer el cuerpo de la respuesta
+            System.out.println("Error de la API. Cuerpo de la respuesta: " + responseBody);
+                throw new Exception("Credenciales incorrectas");
+            }
+        }
+    }
 
    // === GET: Obtener un usuario por ID ===
 public usuario_model getUsuarioPorId(int id) throws Exception {
