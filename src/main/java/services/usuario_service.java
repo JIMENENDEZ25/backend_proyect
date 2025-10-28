@@ -1,5 +1,10 @@
 package services;
 
+/**
+ *
+ * @author Javier Caná
+ */
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.InputStream;
@@ -17,12 +22,7 @@ import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 
-/**
- * Servicio para consumir la API de usuarios desde Render
- * URL base: https://venta-boletos.onrender.com/api/usuarios
- * 
- * @author Jose
- */
+
 public class usuario_service {
 
     private static final String BASE_URL = "https://venta-boletos.onrender.com/api/usuarios";

@@ -26,7 +26,7 @@ import views.Consultar;
 
 /**
  *
- * @author HP
+ * @author Javier Caná
  */
 public class GestionUsuarios extends javax.swing.JFrame {
     

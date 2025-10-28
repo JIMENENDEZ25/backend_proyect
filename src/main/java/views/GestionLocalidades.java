@@ -6,16 +6,128 @@ package views;
 
 /**
  *
- * @author jimem
+ * @author Javier Caná
  */
+
+// Java estándar
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Cursor;
+import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.*;
+import java.util.List;
+
+// Modelos y servicios
+import models.localidad_model4;
+import services.localidad_service;
+
+// Otras vistas (para navegación)
+import views.Administracion;
+
+
+
+
 public class GestionLocalidades extends javax.swing.JFrame {
+    
+    FondoPanel fondo = new FondoPanel();
+    private localidad_service service = new localidad_service();
+
 
     /**
-     * Creates new form GestionLocalidades
+     * Creates new form GestionUsuarios
      */
-    public GestionLocalidades() {
-        initComponents();
+public GestionLocalidades() {
+    
+    initComponents();
+    setLocationRelativeTo(null);
+    setExtendedState(JFrame.MAXIMIZED_BOTH);
+    setVisible(true);
+
+    // === Fondo principal ===
+    jPanel1.setLayout(new java.awt.BorderLayout());
+    jPanel1.setOpaque(false);
+
+    // === Panel superior (formulario) ===
+    panelSuperior.setOpaque(false);
+    panelSuperior.setLayout(new java.awt.GridBagLayout());
+    java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+    gbc.insets = new java.awt.Insets(15, 15, 15, 15);
+    gbc.anchor = java.awt.GridBagConstraints.WEST;
+    gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+
+    // === Fuentes ===
+    java.awt.Font fuenteLabel = new java.awt.Font("Segoe UI Semibold", java.awt.Font.PLAIN, 16);
+    java.awt.Font fuenteCampo = new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 15);
+
+    // === Asignar fuentes a labels ===
+    jLabelId.setFont(fuenteLabel);
+    jLabelNombre.setFont(fuenteLabel);
+    jLabelPrecio.setFont(fuenteLabel);
+
+    // === Campos de texto (más compactos) ===
+    JTextField[] campos = { txtIdLocalidad, txtNombreLocalidad, txtPrecioLocalidad };
+    for (JTextField t : campos) {
+        t.setFont(fuenteCampo);
+        t.setPreferredSize(new java.awt.Dimension(200, 30));
+        t.setBackground(new java.awt.Color(255, 255, 255, 230));
+        t.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
     }
+
+    // === Colocar los labels y campos ===
+    gbc.gridx = 0; gbc.gridy = 0;
+    panelSuperior.add(jLabelId, gbc);
+    gbc.gridx = 1;
+    panelSuperior.add(txtIdLocalidad, gbc);
+
+    gbc.gridx = 0; gbc.gridy++;
+    panelSuperior.add(jLabelNombre, gbc);
+    gbc.gridx = 1;
+    panelSuperior.add(txtNombreLocalidad, gbc);
+
+    gbc.gridx = 0; gbc.gridy++;
+    panelSuperior.add(jLabelPrecio, gbc);
+    gbc.gridx = 1;
+    panelSuperior.add(txtPrecioLocalidad, gbc);
+
+   // === Panel inferior de botones ===
+panelBotones.setOpaque(false);
+panelBotones.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 25, 20));
+
+// === Orden de los botones ===
+JButton[] botones = { btnVolver, btnCrear, btnActualizar, btnEliminar, btnConsultar };
+
+for (JButton b : botones) {
+    b.setPreferredSize(new java.awt.Dimension(150, 40));
+    b.setBackground(new java.awt.Color(8, 184, 223)); // azul celeste
+    b.setForeground(Color.WHITE); // texto blanco
+    b.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+    b.setFocusPainted(false);
+    b.setBorderPainted(false);
+    b.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    panelBotones.add(b);
+}
+
+    // === Acciones de botones ===
+    btnVolver.addActionListener(e -> {
+        new GestionPartidos().setVisible(true);
+        this.dispose();
+    });
+
+
+    // === Añadir ambos paneles ===
+    jPanel1.add(panelSuperior, java.awt.BorderLayout.CENTER);
+    jPanel1.add(panelBotones, java.awt.BorderLayout.SOUTH);
+
+    
+    }
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -26,21 +138,330 @@ public class GestionLocalidades extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new FondoPanel();
+        panelSuperior = new javax.swing.JPanel();
+        jLabelId = new javax.swing.JLabel();
+        jLabelNombre = new javax.swing.JLabel();
+        jLabelPrecio = new javax.swing.JLabel();
+        txtIdLocalidad = new javax.swing.JTextField();
+        txtNombreLocalidad = new javax.swing.JTextField();
+        txtPrecioLocalidad = new javax.swing.JTextField();
+        panelBotones = new javax.swing.JPanel();
+        btnVolver = new javax.swing.JButton();
+        btnCrear = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnConsultar = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabelId.setText("ID");
+
+        jLabelNombre.setText("Nombre");
+
+        jLabelPrecio.setText("Precio");
+
+        btnVolver.setText("Regresar");
+
+        btnCrear.setText("Crear");
+        btnCrear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearActionPerformed(evt);
+            }
+        });
+
+        btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
+
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
+        btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelBotonesLayout = new javax.swing.GroupLayout(panelBotones);
+        panelBotones.setLayout(panelBotonesLayout);
+        panelBotonesLayout.setHorizontalGroup(
+            panelBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelBotonesLayout.createSequentialGroup()
+                .addGap(168, 168, 168)
+                .addComponent(btnVolver)
+                .addGap(40, 40, 40)
+                .addComponent(btnCrear)
+                .addGap(33, 33, 33)
+                .addComponent(btnActualizar)
+                .addGap(18, 18, 18)
+                .addComponent(btnEliminar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnConsultar)
+                .addContainerGap())
+        );
+        panelBotonesLayout.setVerticalGroup(
+            panelBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelBotonesLayout.createSequentialGroup()
+                .addContainerGap(320, Short.MAX_VALUE)
+                .addGroup(panelBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnVolver)
+                    .addComponent(btnActualizar)
+                    .addComponent(btnCrear)
+                    .addComponent(btnEliminar)
+                    .addComponent(btnConsultar))
+                .addGap(67, 67, 67))
+        );
+
+        javax.swing.GroupLayout panelSuperiorLayout = new javax.swing.GroupLayout(panelSuperior);
+        panelSuperior.setLayout(panelSuperiorLayout);
+        panelSuperiorLayout.setHorizontalGroup(
+            panelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSuperiorLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelSuperiorLayout.createSequentialGroup()
+                        .addGroup(panelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelSuperiorLayout.createSequentialGroup()
+                                .addGap(3, 3, 3)
+                                .addGroup(panelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelId)
+                                    .addComponent(jLabelNombre)))
+                            .addComponent(jLabelPrecio, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(12, 12, 12)
+                        .addGroup(panelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtIdLocalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNombreLocalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 42, Short.MAX_VALUE))
+            .addGroup(panelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelSuperiorLayout.createSequentialGroup()
+                    .addGap(0, 319, Short.MAX_VALUE)
+                    .addComponent(txtPrecioLocalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 319, Short.MAX_VALUE)))
+        );
+        panelSuperiorLayout.setVerticalGroup(
+            panelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSuperiorLayout.createSequentialGroup()
+                .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelId)
+                    .addComponent(txtIdLocalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
+                .addGroup(panelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelNombre)
+                    .addComponent(txtNombreLocalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabelPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(467, Short.MAX_VALUE))
+            .addGroup(panelSuperiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelSuperiorLayout.createSequentialGroup()
+                    .addGap(0, 157, Short.MAX_VALUE)
+                    .addComponent(txtPrecioLocalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 809, Short.MAX_VALUE)))
+        );
+
+        jPanel1.add(panelSuperior, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
+                                              
+    String nombre = txtNombreLocalidad.getText().trim();
+    String precioStr = txtPrecioLocalidad.getText().trim();
+
+    // Validar campos
+    if (nombre.isEmpty() || precioStr.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+            "⚠️ Todos los campos son obligatorios.",
+            "Validación", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    double precio;
+    try {
+        precio = Double.parseDouble(precioStr);
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this,
+            "⚠️ El precio debe ser un número válido.",
+            "Validación", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    // Crear el modelo
+    models.localidad_model4 loc = new models.localidad_model4();
+    loc.setNombre(nombre);
+    loc.setPrecio(precio);
+
+    try {
+        services.localidad_service service = new services.localidad_service();
+        models.localidad_model4 creada = service.createLocalidad(loc);
+
+        if (creada != null && creada.getId_localidad() > 0) {
+            JOptionPane.showMessageDialog(this,
+                "✅ Localidad agregada correctamente:\n" + creada.getNombre(),
+                "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            txtIdLocalidad.setText(String.valueOf(creada.getId_localidad()));
+            txtNombreLocalidad.setText("");
+            txtPrecioLocalidad.setText("");
+        } else {
+            JOptionPane.showMessageDialog(this,
+                "⚠️ El servidor respondió pero no devolvió datos válidos.",
+                "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this,
+            "❌ Error al agregar la localidad:\n" + ex.getMessage(),
+            "Error", JOptionPane.ERROR_MESSAGE);
+    }
+       
+    }//GEN-LAST:event_btnCrearActionPerformed
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        // TODO add your handling code here:
+    String idStr = txtIdLocalidad.getText().trim();
+
+    if (idStr.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+            "⚠️ Debe ingresar un ID de localidad para buscar.",
+            "Validación", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    try {
+        int id = Integer.parseInt(idStr);
+        services.localidad_service service = new services.localidad_service();
+        List<models.localidad_model4> localidades = service.getLocalidades();
+
+        // Buscar la localidad por ID en la lista
+        models.localidad_model4 encontrada = localidades.stream()
+                .filter(l -> l.getId_localidad() == id)
+                .findFirst()
+                .orElse(null);
+
+        if (encontrada != null) {
+            txtNombreLocalidad.setText(encontrada.getNombre());
+            txtPrecioLocalidad.setText(String.valueOf(encontrada.getPrecio()));
+            JOptionPane.showMessageDialog(this,
+                "✅ Localidad encontrada:\n" + encontrada.getNombre(),
+                "Resultado", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this,
+                "⚠️ No se encontró ninguna localidad con ID " + id,
+                "Sin resultados", JOptionPane.WARNING_MESSAGE);
+        }
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this,
+            "❌ Error al consultar la localidad:\n" + ex.getMessage(),
+            "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+        
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        // TODO add your handling code here:
+    String idStr = txtIdLocalidad.getText().trim();
+    String nombre = txtNombreLocalidad.getText().trim();
+    String precioStr = txtPrecioLocalidad.getText().trim();
+
+    if (idStr.isEmpty() || nombre.isEmpty() || precioStr.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+            "⚠️ Todos los campos son obligatorios.",
+            "Validación", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    try {
+        int id = Integer.parseInt(idStr);
+        double precio = Double.parseDouble(precioStr);
+
+        models.localidad_model4 loc = new models.localidad_model4();
+        loc.setNombre(nombre);
+        loc.setPrecio(precio);
+
+        services.localidad_service service = new services.localidad_service();
+        models.localidad_model4 actualizada = service.updateLocalidad(id, loc);
+
+        JOptionPane.showMessageDialog(this,
+            "✅ Localidad actualizada correctamente.",
+            "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this,
+            "⚠️ ID y precio deben ser numéricos válidos.",
+            "Validación", JOptionPane.WARNING_MESSAGE);
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this,
+            "❌ Error al actualizar la localidad:\n" + ex.getMessage(),
+            "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+        
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+    String idStr = txtIdLocalidad.getText().trim();
+
+    if (idStr.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+            "⚠️ Debe ingresar el ID de la localidad que desea eliminar.",
+            "Validación", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    int confirm = JOptionPane.showConfirmDialog(this,
+        "¿Estás seguro de eliminar esta localidad?",
+        "Confirmar eliminación",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.WARNING_MESSAGE);
+
+    if (confirm != JOptionPane.YES_OPTION) return;
+
+    try {
+        int id = Integer.parseInt(idStr);
+        services.localidad_service service = new services.localidad_service();
+        service.deleteLocalidad(id);
+
+        JOptionPane.showMessageDialog(this,
+            "🗑️ Localidad eliminada correctamente.",
+            "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+        txtIdLocalidad.setText("");
+        txtNombreLocalidad.setText("");
+        txtPrecioLocalidad.setText("");
+
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this,
+            "❌ Error al eliminar la localidad:\n" + ex.getMessage(),
+            "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -68,6 +489,13 @@ public class GestionLocalidades extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(GestionLocalidades.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -78,5 +506,30 @@ public class GestionLocalidades extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnConsultar;
+    private javax.swing.JButton btnCrear;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnVolver;
+    private javax.swing.JLabel jLabelId;
+    private javax.swing.JLabel jLabelNombre;
+    private javax.swing.JLabel jLabelPrecio;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel panelBotones;
+    private javax.swing.JPanel panelSuperior;
+    private javax.swing.JTextField txtIdLocalidad;
+    private javax.swing.JTextField txtNombreLocalidad;
+    private javax.swing.JTextField txtPrecioLocalidad;
     // End of variables declaration//GEN-END:variables
+class FondoPanel extends JPanel {
+    private Image imagen;
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        imagen = new ImageIcon(getClass().getResource("/images/menu.png")).getImage();
+        g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
+    }
+}
+
 }

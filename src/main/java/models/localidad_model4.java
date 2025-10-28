@@ -6,8 +6,12 @@ package models;
 
 /**
  *
- * @author jimem
+ * @author Javier Caná
  */
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class localidad_model4 {
     private int id_localidad;
     private String nombre;
@@ -36,6 +40,4 @@ public class localidad_model4 {
     public void setPrecio(double precio) {
         this.precio = precio;
     }
-
-    
 }

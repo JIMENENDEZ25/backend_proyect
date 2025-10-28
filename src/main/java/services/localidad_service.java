@@ -6,7 +6,7 @@ package services;
 
 /**
  *
- * @author jimem
+ * @author Javier Caná
  */
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -26,18 +26,23 @@ import java.io.InputStream; //
 import java.util.List;
 
 public class localidad_service {
-    private static final String BASE_URL = "https://apirest2025umg.onrender.com/api/customer";
+    
+    private static final String BASE_URL = "https://venta-boletos.onrender.com/api/localidades";
     private static final ObjectMapper mapper = new ObjectMapper();
 
     // GET clientes
     public List<localidad_model4> getLocalidades() throws Exception {
-        try (CloseableHttpClient client = HttpClients.createDefault()) {
-            HttpGet request = new HttpGet(BASE_URL);
-            ClassicHttpResponse response = (ClassicHttpResponse) client.execute(request);
-            InputStream is = response.getEntity().getContent();
-            return mapper.readValue(is, new TypeReference<List<localidad_model4>>() {});
-        }
+    try (CloseableHttpClient client = HttpClients.createDefault()) {
+        HttpGet request = new HttpGet(BASE_URL);
+        request.setHeader("Accept", "application/json");
+
+        ClassicHttpResponse response = (ClassicHttpResponse) client.execute(request);
+        InputStream is = response.getEntity().getContent();
+
+        return mapper.readValue(is, new TypeReference<List<localidad_model4>>() {});
     }
+}
+
 
     // POST crear cliente
     public localidad_model4 createLocalidad(localidad_model4 c) throws Exception {

@@ -4,7 +4,13 @@
  */
 package models;
 
+/**
+ *
+ * @author Javier Caná
+ */
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties (ignoreUnknown =  true)
 
 public class usuario_model {
@@ -14,6 +20,7 @@ public class usuario_model {
     private String contrasena;
     private String nombre_completo;
     private String rol;
+    @JsonProperty("fecha_creacion")  
     private String fecha_creacion;
 
     // Getters y setters
@@ -65,6 +72,8 @@ public class usuario_model {
     public void setFecha_creacion(String fecha_creacion) {
         this.fecha_creacion = fecha_creacion;
     }
+
+
     
     
 }

@@ -4,6 +4,11 @@
  */
 package views;
 
+/**
+ *
+ * @author Javier Caná
+ */
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -13,22 +18,18 @@ import javax.swing.JButton;
 import javax.swing.Box;
 import javax.swing.JFrame;
 
-/**
- *
- * @author HP
- */
+
 public class Administracion extends javax.swing.JFrame {
     
     FondoPanel fondo = new FondoPanel();
 
-    public Administracion() {
+public Administracion() {
     initComponents();
     setLocationRelativeTo(null);
     setExtendedState(JFrame.MAXIMIZED_BOTH);
     setVisible(true);
 
-
-    // Fondo principal con layout centrado
+    // === Fondo principal centrado ===
     jPanel1.setLayout(new java.awt.GridBagLayout());
     java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
     gbc.gridx = 0;
@@ -36,67 +37,63 @@ public class Administracion extends javax.swing.JFrame {
     gbc.anchor = java.awt.GridBagConstraints.CENTER;
     jPanel1.add(panelBotones, gbc);
 
-    // Panel transparente para que se vea el fondo
+    // === Panel transparente ===
     panelBotones.setOpaque(false);
-
-    // Layout vertical para los botones
     panelBotones.setLayout(new javax.swing.BoxLayout(panelBotones, javax.swing.BoxLayout.Y_AXIS));
 
-    // === Estilo general de botones ===
+    // === Margen superior (mantiene la posición que marcaste) ===
+    panelBotones.add(Box.createVerticalStrut(-40));
+
+    // === Estilo de botones ===
     JButton[] botones = { jButton1, jButton2, jButton3, jButton4 };
     for (JButton b : botones) {
         b.setAlignmentX(CENTER_ALIGNMENT);
-        b.setPreferredSize(new java.awt.Dimension(220, 45));  // tamaño más grande
-        b.setMaximumSize(new java.awt.Dimension(220, 45));
-        b.setBackground(new java.awt.Color(8, 184, 223));     // color #08b8df
-        b.setForeground(Color.WHITE);                         // texto blanco
-        b.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 16));
+        b.setPreferredSize(new java.awt.Dimension(260, 65));  // más largos y gruesos
+        b.setMaximumSize(new java.awt.Dimension(260, 65));
+        b.setBackground(new java.awt.Color(8, 184, 223));
+        b.setForeground(Color.WHITE);
+        b.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 18));
         b.setFocusPainted(false);
         b.setBorderPainted(false);
         b.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        // Espacio entre botones
-        panelBotones.add(Box.createVerticalStrut(20));
+        // Separación leve (menos que antes)
+        panelBotones.add(Box.createVerticalStrut(40));
         panelBotones.add(b);
     }
-    
+
     // === ACCIONES DE LOS BOTONES ===
-
-// Botón 1 - Gestión de Usuarios
-jButton1.addActionListener(e -> {
-    GestionUsuarios usuarios = new GestionUsuarios();
-    usuarios.setVisible(true);
-    this.dispose(); // Cierra la ventana actual
-});
-
-// Botón 2 - Gestión de Partidos
-//jButton2.addActionListener(e -> {
-  //  GestionPartidos partidos = new GestionPartidos();
-    //partidos.setVisible(true);
-    //this.dispose();
-//});
-
-// Botón 3 - Gestión de Localidades
-//jButton3.addActionListener(e -> {
-  //  GestionLocalidades localidades = new GestionLocalidades();
-   // localidades.setVisible(true);
-    //this.dispose();
-//});
-
-// Botón 4 - Cerrar Sesión
-jButton4.addActionListener(e -> {
-    int confirm = javax.swing.JOptionPane.showConfirmDialog(this, 
-        "¿Deseas cerrar sesión?", 
-        "Confirmar", 
-        javax.swing.JOptionPane.YES_NO_OPTION);
-    if (confirm == javax.swing.JOptionPane.YES_OPTION) {
-        inicio inicio = new inicio();
-        inicio.setVisible(true);
+    jButton1.addActionListener(e -> {
+        GestionUsuarios usuarios = new GestionUsuarios();
+        usuarios.setVisible(true);
         this.dispose();
-    }
-});
+    });
 
+    jButton2.addActionListener(e -> {
+        GestionPartidos partidos = new GestionPartidos();
+        partidos.setVisible(true);
+        this.dispose();
+    });
+
+    jButton3.addActionListener(e -> {
+        GestionPartidos partidos = new GestionPartidos();
+        partidos.setVisible(true);
+        this.dispose();
+    });
+
+    jButton4.addActionListener(e -> {
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
+            "¿Deseas cerrar sesión?",
+            "Confirmar",
+            javax.swing.JOptionPane.YES_NO_OPTION);
+        if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+            inicio inicio = new inicio();
+            inicio.setVisible(true);
+            this.dispose();
+        }
+    });
 }
+
 
 
     /**
@@ -130,10 +127,15 @@ jButton4.addActionListener(e -> {
         });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 90, 110, 40));
 
-        jButton2.setText("Gestión de Partidos");
+        jButton2.setText("Gestión de Ventas");
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 170, -1, -1));
 
-        jButton3.setText("Gestión de Localidades");
+        jButton3.setText("Gestión de Partidos");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 220, -1, -1));
 
         jButton4.setText("Cerrar Sesión");
@@ -156,6 +158,10 @@ jButton4.addActionListener(e -> {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -6,7 +6,7 @@ package services;
 
 /**
  *
- * @author jimem
+ * @author Javier Caná
  */
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -28,7 +28,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class partido_service {
-    private static final String BASE_URL = "https://venta-boletos.onrender.com";
+    private static final String BASE_URL = "https://venta-boletos.onrender.com/api/partidos";
     private static final ObjectMapper mapper = new ObjectMapper();
 
     // GET clientes
@@ -43,43 +43,45 @@ public class partido_service {
 
     // POST crear cliente
     public partido_model createPartido(partido_model c) throws Exception {
-        if(c.getFecha_partido() <= 0){
-                LocalDate now = LocalDate.now();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("DD-MM-YYYY");
-                String fechaStr = now.format(formatter);
-                c.setFecha_partido(Integer.parseInt(fechaStr));
-            }
-        
-        try (CloseableHttpClient client = HttpClients.createDefault()) {
-            HttpPost request = new HttpPost(BASE_URL + "/create");
-            
-            String json = mapper.writeValueAsString(c);
 
-            request.setEntity(EntityBuilder.create()
-                    .setText(json)
-                    .setContentType(ContentType.APPLICATION_JSON) //Para especificar el tipo de lenguaje del body que va a recibir
-                    .build());
+    try (CloseableHttpClient client = HttpClients.createDefault()) {
 
-            ClassicHttpResponse response = (ClassicHttpResponse) client.execute(request);
-            InputStream is = response.getEntity().getContent();
-            return mapper.readValue(is, partido_model.class);
-        }
+        HttpPost request = new HttpPost(BASE_URL + "/create");
+
+        // Convertir el objeto partido_model a JSON
+        String json = mapper.writeValueAsString(c);
+
+        request.setEntity(EntityBuilder.create()
+                .setText(json)
+                .setContentType(ContentType.APPLICATION_JSON)
+                .build());
+
+        // Enviar la solicitud
+        ClassicHttpResponse response = (ClassicHttpResponse) client.execute(request);
+        InputStream is = response.getEntity().getContent();
+
+        // Devolver el partido creado (si el backend devuelve el objeto creado)
+        return mapper.readValue(is, partido_model.class);
     }
+}
     
-    public partido_model updatePartido(int id, partido_model c) throws Exception {
-        try(CloseableHttpClient client = HttpClients.createDefault()){
-            HttpPut request = new HttpPut(BASE_URL + "/update/" + id);
-            String json = mapper.writeValueAsString(c);
-            
-            request.setEntity(EntityBuilder.create()
+    public partido_model updatePartido(int id, partido_model p) throws Exception {
+    try (CloseableHttpClient client = HttpClients.createDefault()) {
+        HttpPut request = new HttpPut(BASE_URL + "/update/" + id);
+        String json = mapper.writeValueAsString(p);
+
+        request.setEntity(EntityBuilder.create()
             .setText(json)
             .setContentType(ContentType.APPLICATION_JSON)
-                    .build());
-            ClassicHttpResponse response = (ClassicHttpResponse) client.execute(request);
-            InputStream is = response.getEntity().getContent();
-            return mapper.readValue(is, partido_model.class);
-        }
+            .build());
+
+        ClassicHttpResponse response = (ClassicHttpResponse) client.execute(request);
+        InputStream is = response.getEntity().getContent();
+        return mapper.readValue(is, partido_model.class);
     }
+}
+
+
     
     public void deleteCustomer (int id) throws Exception {
         try (CloseableHttpClient client = HttpClients.createDefault()){

@@ -4,10 +4,16 @@
  */
 package views;
 
+/**
+ *
+ * @author Javier Caná
+ */
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.swing.JMenuItem;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -19,288 +25,265 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.List;
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
-import services.usuario_service;
-import models.usuario_model;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+import models.partido_model;
+import services.partido_service;
 
-
-/**
- *
- * @author Javier Caná
- */
-public class Consultar extends javax.swing.JFrame {
+public class ConsultaPartido extends javax.swing.JFrame {
 
     FondoPanel fondo = new FondoPanel();
-    private usuario_service service = new usuario_service();
-    private JTable tablaUsuarios;
+    private partido_service service = new partido_service();
+    private JTable tablaPartidos;
     private DefaultTableModel modeloTabla;
     private JTextField txtBuscarId;
-    
-    public Consultar() {
-    setContentPane(fondo);
-    setTitle("Consulta de Usuarios");
-    setSize(800, 600);
-    setLocationRelativeTo(null);
-    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    setLayout(new BorderLayout());
-    setExtendedState(JFrame.MAXIMIZED_BOTH);
-    setVisible(true);
 
+    public ConsultaPartido() {
+        setContentPane(fondo);
+        setTitle("Consulta de Partidos");
+        setSize(900, 600);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLayout(new BorderLayout());
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setVisible(true);
+        
 
-    // === Panel de búsqueda alineado a la izquierda ===
-    JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 15));
-    panelBusqueda.setOpaque(false);
+        // === Panel de búsqueda ===
+        JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 15));
+        panelBusqueda.setOpaque(false);
 
-    // Estilo del texto "Buscar por ID" sin fondo, letra blanca
-    JLabel lblBuscar = new JLabel("Buscar por ID:");
-    lblBuscar.setForeground(Color.WHITE);
-    lblBuscar.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        JLabel lblBuscar = new JLabel("Buscar por ID:");
+        lblBuscar.setForeground(Color.WHITE);
+        lblBuscar.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
-    txtBuscarId = new JTextField(10);
-    txtBuscarId.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-    txtBuscarId.setPreferredSize(new Dimension(150, 35));
-    txtBuscarId.setBackground(new Color(255, 255, 255, 230));
-    txtBuscarId.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
+        txtBuscarId = new JTextField(10);
+        txtBuscarId.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        txtBuscarId.setPreferredSize(new Dimension(150, 35));
+        txtBuscarId.setBackground(new Color(255, 255, 255, 230));
+        txtBuscarId.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
 
-    JButton btnBuscar = new JButton("Buscar");
-    btnBuscar.setBackground(new Color(8, 184, 223));
-    btnBuscar.setForeground(Color.WHITE);
-    btnBuscar.setFont(new Font("Segoe UI", Font.BOLD, 14));
-    btnBuscar.setFocusPainted(false);
-    btnBuscar.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    btnBuscar.addActionListener(e -> buscarUsuario());
+        JButton btnBuscar = new JButton("Buscar");
+        btnBuscar.setBackground(new Color(8, 184, 223));
+        btnBuscar.setForeground(Color.WHITE);
+        btnBuscar.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btnBuscar.setFocusPainted(false);
+        btnBuscar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnBuscar.addActionListener(e -> buscarPartido());
 
-    panelBusqueda.add(lblBuscar);
-    panelBusqueda.add(txtBuscarId);
-    panelBusqueda.add(btnBuscar);
+        panelBusqueda.add(lblBuscar);
+        panelBusqueda.add(txtBuscarId);
+        panelBusqueda.add(btnBuscar);
 
-    // === Tabla de usuarios con columna "Creación" ===
-    String[] columnas = {"ID", "Usuario", "Contraseña", "Nombre Completo", "Rol", "Creación"};
-    modeloTabla = new DefaultTableModel(columnas, 0) {
-        @Override
-        public boolean isCellEditable(int row, int column) {
-            return column != 0 && column != 4 && column != 5;
-        }
-    };
+        // === Tabla de partidos ===
+        String[] columnas = {"ID", "Equipo Local", "Equipo Visitante", "Fecha", "Estadio", "Estado"};
+        modeloTabla = new DefaultTableModel(columnas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // Solo permitir edición en columnas de texto, no en ID
+                return column != 0;
+            }
+        };
 
-    tablaUsuarios = new JTable(modeloTabla);
-    tablaUsuarios.setRowHeight(30);
-    tablaUsuarios.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-    tablaUsuarios.getTableHeader().setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
-    tablaUsuarios.setSelectionBackground(new Color(8, 184, 223));
-    tablaUsuarios.setGridColor(Color.LIGHT_GRAY);
-    tablaUsuarios.getTableHeader().setBackground(new Color(8, 184, 223));
-    tablaUsuarios.getTableHeader().setForeground(Color.WHITE);
+        tablaPartidos = new JTable(modeloTabla);
+        tablaPartidos.setRowHeight(30);
+        tablaPartidos.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        tablaPartidos.getTableHeader().setFont(new Font("Segoe UI Semibold", Font.BOLD, 14));
+        tablaPartidos.setSelectionBackground(new Color(8, 184, 223));
+        tablaPartidos.setGridColor(Color.LIGHT_GRAY);
+        tablaPartidos.getTableHeader().setBackground(new Color(8, 184, 223));
+        tablaPartidos.getTableHeader().setForeground(Color.WHITE);
 
-    // === ScrollPane sin bordes visibles ===
-    JScrollPane scrollTabla = new JScrollPane(tablaUsuarios);
-    scrollTabla.setPreferredSize(new Dimension(700, 300));
-    scrollTabla.setBorder(BorderFactory.createEmptyBorder());
-    scrollTabla.setBackground(Color.WHITE);
-    scrollTabla.getViewport().setBackground(Color.WHITE);
+        JScrollPane scrollTabla = new JScrollPane(tablaPartidos);
+        scrollTabla.setPreferredSize(new Dimension(850, 350));
+        scrollTabla.setBorder(BorderFactory.createEmptyBorder());
+        scrollTabla.setBackground(Color.WHITE);
+        scrollTabla.getViewport().setBackground(Color.WHITE);
 
-    // === Panel centrado con espacio alrededor para efecto "flotante" ===
-    JPanel panelTabla = new JPanel(new GridBagLayout());
-    panelTabla.setOpaque(false);
-    GridBagConstraints gbc = new GridBagConstraints();
-    gbc.gridx = 0;
-    gbc.gridy = 0;
-    gbc.insets = new Insets(40, 40, 40, 40); // espacio alrededor
-    panelTabla.add(scrollTabla, gbc);
+        JPanel panelTabla = new JPanel(new GridBagLayout());
+        panelTabla.setOpaque(false);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(30, 30, 30, 30);
+        panelTabla.add(scrollTabla, gbc);
 
-    // === Menú contextual para eliminar con estilo de botón ===
-    JPopupMenu menuEliminar = new JPopupMenu();
-    JMenuItem eliminarItem = new JMenuItem("Eliminar usuario");
-    eliminarItem.setBackground(new Color(8, 184, 223));
-    eliminarItem.setForeground(Color.WHITE);
-    eliminarItem.setFont(new Font("Segoe UI", Font.BOLD, 14));
-    eliminarItem.setOpaque(true);
-    eliminarItem.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
-    eliminarItem.addActionListener(e -> eliminarUsuarioSeleccionado());
-    menuEliminar.add(eliminarItem);
+        // === Menú contextual para eliminar ===
+        JPopupMenu menuEliminar = new JPopupMenu();
+        JMenuItem eliminarItem = new JMenuItem("Eliminar partido");
+        eliminarItem.setBackground(new Color(8, 184, 223));
+        eliminarItem.setForeground(Color.WHITE);
+        eliminarItem.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        eliminarItem.setOpaque(true);
+        eliminarItem.addActionListener(e -> eliminarPartidoSeleccionado());
+        menuEliminar.add(eliminarItem);
 
-    tablaUsuarios.addMouseListener(new MouseAdapter() {
-        public void mousePressed(MouseEvent e) {
-            int fila = tablaUsuarios.rowAtPoint(e.getPoint());
-            if (fila >= 0) {
-                tablaUsuarios.setRowSelectionInterval(fila, fila);
-                if (SwingUtilities.isRightMouseButton(e)) {
-                    menuEliminar.show(tablaUsuarios, e.getX(), e.getY());
+        tablaPartidos.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                int fila = tablaPartidos.rowAtPoint(e.getPoint());
+                if (fila >= 0) {
+                    tablaPartidos.setRowSelectionInterval(fila, fila);
+                    if (SwingUtilities.isRightMouseButton(e)) {
+                        menuEliminar.show(tablaPartidos, e.getX(), e.getY());
+                    }
                 }
             }
-        }
-    });
-
-    // === Botón actualizar con estilo consistente ===
-    JButton btnActualizar = new JButton("Actualizar cambios");
-    btnActualizar.setBackground(new Color(8, 184, 223));
-    btnActualizar.setForeground(Color.WHITE);
-    btnActualizar.setFont(new Font("Segoe UI", Font.BOLD, 14));
-    btnActualizar.setFocusPainted(false);
-    btnActualizar.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    btnActualizar.addActionListener(e -> actualizarCambios());
-
-    JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
-    panelBotones.setOpaque(false);
-    panelBotones.add(btnActualizar);
-
-    // === Añadir todo a la ventana ===
-    add(panelBusqueda, BorderLayout.NORTH);     // búsqueda arriba a la izquierda
-    add(panelTabla, BorderLayout.CENTER);       // tabla centrada y flotante
-    add(panelBotones, BorderLayout.SOUTH);      // botón actualizar abajo
-
-    // === Cargar usuarios al iniciar ===
-    cargarTodosLosUsuarios();
-}
-
-
-
-    
-private void buscarUsuario() {
-    String idTexto = txtBuscarId.getText().trim();
-    if (idTexto.isEmpty()) {
-        cargarTodosLosUsuarios(); // Si está vacío, carga todos
-        return;
-    }
-
-    try {
-        int id = Integer.parseInt(idTexto);
-        usuario_model u = service.getUsuarioPorId(id);
-
-        modeloTabla.setRowCount(0); // Limpiar tabla
-        modeloTabla.addRow(new Object[]{
-            u.getId_usuario(),
-            u.getNombre_usuario(),
-            "*****",
-            u.getNombre_completo(),
-            u.getRol(),
-            u.getFecha_creacion() != null ? u.getFecha_creacion() : "Sin fecha"
         });
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this, "⚠️ ID inválido.");
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "❌ Usuario no encontrado:\n" + ex.getMessage());
+
+        // === Botón actualizar ===
+        JButton btnActualizar = new JButton("Actualizar cambios");
+        btnActualizar.setBackground(new Color(8, 184, 223));
+        btnActualizar.setForeground(Color.WHITE);
+        btnActualizar.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btnActualizar.setFocusPainted(false);
+        btnActualizar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnActualizar.addActionListener(e -> actualizarCambios());
+
+        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        panelBotones.setOpaque(false);
+        panelBotones.add(btnActualizar);
+
+        add(panelBusqueda, BorderLayout.NORTH);
+        add(panelTabla, BorderLayout.CENTER);
+        add(panelBotones, BorderLayout.SOUTH);
+
+        cargarTodosLosPartidos();
     }
-}
 
-    
-private void eliminarUsuarioSeleccionado() {
-    int fila = tablaUsuarios.getSelectedRow();
-    if (fila == -1) {
-        JOptionPane.showMessageDialog(this, "⚠️ Selecciona un usuario para eliminar.");
-        return;
-    }
-
-    int confirm = JOptionPane.showConfirmDialog(this, "¿Eliminar este usuario?", "Confirmar", JOptionPane.YES_NO_OPTION);
-    if (confirm != JOptionPane.YES_OPTION) return;
-
-    try {
-        int id = Integer.parseInt(modeloTabla.getValueAt(fila, 0).toString());
-        service.deleteUsuario(id);
-        JOptionPane.showMessageDialog(this, "🗑️ Usuario eliminado correctamente.");
-        cargarTodosLosUsuarios();
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "❌ Error al eliminar:\n" + ex.getMessage());
-    }
-}
-
-
-private void actualizarCambios() {
-    try {
-        for (int i = 0; i < modeloTabla.getRowCount(); i++) {
-            int id = Integer.parseInt(modeloTabla.getValueAt(i, 0).toString());
-            String usuario = modeloTabla.getValueAt(i, 1).toString().trim();
-            String contrasena = modeloTabla.getValueAt(i, 2).toString().trim();
-            String nombre = modeloTabla.getValueAt(i, 3).toString().trim();
-            String rol = modeloTabla.getValueAt(i, 4).toString().trim();
-
-            // Validación de campos vacíos
-            if (usuario.isEmpty() || nombre.isEmpty() || rol.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "⚠️ Campos vacíos en fila " + (i + 1));
-                continue;
+    // === Cargar todos ===
+    private void cargarTodosLosPartidos() {
+        modeloTabla.setRowCount(0);
+        try {
+            List<partido_model> partidos = service.getPartidos();
+            for (partido_model p : partidos) {
+                modeloTabla.addRow(new Object[]{
+                    p.getId_partido(),
+                    p.getEquipo_local(),
+                    p.getEquipo_visitante(),
+                    p.getFecha_partido(),
+                    p.getEstadio(),
+                    p.getEstado()
+                });
             }
-
-            // Validación de duplicado en nombre de usuario
-            if (nombreUsuarioDuplicado(usuario, id)) {
-                JOptionPane.showMessageDialog(this, "⚠️ El nombre de usuario '" + usuario + "' ya existe en otra fila.");
-                continue;
-            }
-
-            usuario_model actualizado = new usuario_model();
-            actualizado.setId_usuario(id); // por si el backend lo requiere
-            actualizado.setNombre_usuario(usuario);
-            actualizado.setNombre_completo(nombre);
-            actualizado.setRol(rol);
-
-            // Solo enviar contraseña si fue modificada
-            if (!contrasena.equals("*****") && !contrasena.isEmpty()) {
-                actualizado.setContrasena(contrasena);
-            }
-
-            // Depuración: imprimir JSON enviado
-            ObjectMapper mapper = new ObjectMapper();
-            String json = mapper.writeValueAsString(actualizado);
-            System.out.println("Actualizando ID: " + id);
-            System.out.println("JSON enviado: " + json);
-
-            service.actualizarUsuario(id, actualizado);
-        }
-
-        JOptionPane.showMessageDialog(this, "✅ Cambios actualizados correctamente.");
-        cargarTodosLosUsuarios();
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "❌ Error al actualizar:\n" + ex.getMessage());
-    }
-}
-
-private boolean nombreUsuarioDuplicado(String nombre, int idActual) {
-    for (int i = 0; i < modeloTabla.getRowCount(); i++) {
-        int idFila = Integer.parseInt(modeloTabla.getValueAt(i, 0).toString());
-        if (idFila == idActual) continue;
-
-        String otroNombre = modeloTabla.getValueAt(i, 1).toString().trim();
-        if (nombre.equalsIgnoreCase(otroNombre)) {
-            return true;
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "❌ Error al cargar los partidos:\n" + ex.getMessage());
         }
     }
-    return false;
-}
 
-  private void cargarTodosLosUsuarios() {
-    modeloTabla.setRowCount(0); // Limpiar tabla
-
-    try {
-        List<usuario_model> usuarios = service.getTodosLosUsuarios();
-
-        for (usuario_model u : usuarios) {
-            modeloTabla.addRow(new Object[]{
-                u.getId_usuario(),
-                u.getNombre_usuario(),
-                "*****", // Contraseña oculta por seguridad
-                u.getNombre_completo(),
-                u.getRol(),
-                u.getFecha_creacion() != null ? u.getFecha_creacion() : "Sin fecha"
-            });
+    // === Buscar por ID ===
+    private void buscarPartido() {
+        String idTexto = txtBuscarId.getText().trim();
+        if (idTexto.isEmpty()) {
+            cargarTodosLosPartidos();
+            return;
         }
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "❌ Error al cargar usuarios:\n" + ex.getMessage());
+
+        try {
+            int id = Integer.parseInt(idTexto);
+            List<partido_model> partidos = service.getPartidos();
+
+            partido_model encontrado = partidos.stream()
+                    .filter(p -> p.getId_partido() == id)
+                    .findFirst()
+                    .orElse(null);
+
+            modeloTabla.setRowCount(0);
+            if (encontrado != null) {
+                modeloTabla.addRow(new Object[]{
+                    encontrado.getId_partido(),
+                    encontrado.getEquipo_local(),
+                    encontrado.getEquipo_visitante(),
+                    encontrado.getFecha_partido(),
+                    encontrado.getEstadio(),
+                    encontrado.getEstado()
+                });
+            } else {
+                JOptionPane.showMessageDialog(this,
+                    "⚠️ No se encontró ningún partido con ID " + id,
+                    "Sin resultados", JOptionPane.WARNING_MESSAGE);
+            }
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "⚠️ ID inválido.");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "❌ Error al buscar partido:\n" + ex.getMessage());
+        }
     }
-}
+
+    // === Eliminar seleccionado ===
+    private void eliminarPartidoSeleccionado() {
+        int fila = tablaPartidos.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "⚠️ Selecciona un partido para eliminar.");
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this,
+            "¿Eliminar este partido?", "Confirmar eliminación",
+            JOptionPane.YES_NO_OPTION);
+
+        if (confirm != JOptionPane.YES_OPTION) return;
+
+        try {
+            int id = Integer.parseInt(modeloTabla.getValueAt(fila, 0).toString());
+            service.deleteCustomer(id);
+            JOptionPane.showMessageDialog(this, "🗑️ Partido eliminado correctamente.");
+            cargarTodosLosPartidos();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "❌ Error al eliminar:\n" + ex.getMessage());
+        }
+    }
+
+    // === Actualizar cambios ===
+    private void actualizarCambios() {
+        try {
+            for (int i = 0; i < modeloTabla.getRowCount(); i++) {
+                int id = Integer.parseInt(modeloTabla.getValueAt(i, 0).toString());
+                String local = modeloTabla.getValueAt(i, 1).toString().trim();
+                String visitante = modeloTabla.getValueAt(i, 2).toString().trim();
+                String fecha = modeloTabla.getValueAt(i, 3).toString().trim();
+                String estadio = modeloTabla.getValueAt(i, 4).toString().trim();
+                String estado = modeloTabla.getValueAt(i, 5).toString().trim();
+
+                if (local.isEmpty() || visitante.isEmpty() || estadio.isEmpty() || estado.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "⚠️ Campos vacíos en fila " + (i + 1));
+                    continue;
+                }
+
+                partido_model actualizado = new partido_model();
+                actualizado.setEquipo_local(local);
+                actualizado.setEquipo_visitante(visitante);
+                actualizado.setFecha_partido(fecha);
+                actualizado.setEstadio(estadio);
+                actualizado.setEstado(estado);
+
+                ObjectMapper mapper = new ObjectMapper();
+                String json = mapper.writeValueAsString(actualizado);
+                System.out.println("Actualizando partido ID: " + id);
+                System.out.println("JSON enviado: " + json);
+
+                // Llamada al servicio (deberás agregar método updatePartido en partido_service)
+                // service.updatePartido(id, actualizado);
+            }
+
+            JOptionPane.showMessageDialog(this, "✅ Cambios actualizados correctamente.");
+            cargarTodosLosPartidos();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "❌ Error al actualizar:\n" + ex.getMessage());
+        }
+    }
 
 
 
@@ -478,14 +461,18 @@ private boolean nombreUsuarioDuplicado(String nombre, int idActual) {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Consultar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsultaPartido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Consultar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsultaPartido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Consultar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsultaPartido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Consultar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsultaPartido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -494,7 +481,7 @@ private boolean nombreUsuarioDuplicado(String nombre, int idActual) {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Consultar().setVisible(true);
+                new ConsultaPartido().setVisible(true);
             }
         });
     }
@@ -521,7 +508,7 @@ class FondoPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        imagen = new ImageIcon(getClass().getResource("/images/5.jpg")).getImage();
+        imagen = new ImageIcon(getClass().getResource("/images/6.png")).getImage();
         g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
     }
 }
